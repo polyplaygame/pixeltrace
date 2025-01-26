@@ -1,0 +1,87 @@
+syntax = "proto3";
+package pixel;
+
+option go_package = "pixel";
+
+import "idl/common.proto";
+import "idl/api.proto";
+
+message AppCode {
+    int64 id = 1;
+    string code = 2;
+    string description = 3;
+    string time_zone = 4;
+}
+
+service PixelService {
+    rpc HandleImgPixelEvent (ImgPixelEvent) returns (common.BaseResponse) {
+        option (api.get) = "/pixel";
+    }
+    rpc HandleBeaconPixelEvent (BeaconPixelEvent) returns (common.BaseResponse) {
+        option (api.post) = "/pixel";
+    }
+    rpc AppCodeDetail (GetAppCodeDetailRequest) returns (GetAppCodeDetailResponse) {
+        option (api.get) = "/app_code/{code}";
+    }
+    rpc AppCodeCreate (CreateAppCodeRequest) returns (CreateAppCodeResponse) {
+        option (api.post) = "/app_code";
+    }
+    rpc AppCodeSearch (SearchAppCodeRequest) returns (SearchAppCodeResponse) {
+        option (api.get) = "/app_code/search";
+    }
+}
+
+message ImgPixelEvent {
+    string app = 1[(api.query) = "app",(api.vd)="$ != ''"];
+    string ip = 2;
+    int64 timestamp = 3;
+    string data = 4[(api.query) = "data",(api.vd)="$ != ''"];
+}
+
+message BeaconPixelEvent {
+    string app = 1[(api.query) = "app",(api.vd)="$ != ''"];
+    string ip = 2;
+    int64 timestamp = 3;
+    string raw_data = 4[(api.raw_body) = "raw_data"];
+    string data = 5;
+    string data_list = 6;
+    string gzip = 7;
+}
+
+message GetAppCodeDetailRequest {
+    string code = 1[(api.query) = "code",(api.vd)="$ != ''"];
+}
+
+message GetAppCodeDetailResponse {
+    common.Status status = 1;
+    string msg = 2;
+    AppCode data = 3;
+}
+
+message CreateAppCodeRequest {
+    string code = 1[(api.query) = "code",(api.vd)="$ != ''"];
+    string description = 2[(api.query) = "description",(api.vd)="$ != ''"];
+    string time_zone = 3[(api.query) = "time_zone",(api.vd)="$ != ''"];
+}
+
+message CreateAppCodeResponse {
+    common.Status status = 1;
+    string msg = 2;
+    AppCode data = 3;
+}
+
+message SearchAppCodeRequest {
+    int64 page = 1[(api.query) = "page",(api.vd)="$ != 0"];
+    int64 page_size = 2[(api.query) = "page_size",(api.vd)="$ != 0"];
+}
+
+message SearchAppCodeData {
+    int64 total = 1;
+    repeated AppCode items = 2;
+}
+
+message SearchAppCodeResponse {
+    common.Status status = 1;
+    string msg = 2;
+    SearchAppCodeData data = 3;
+}

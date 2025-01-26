@@ -1,0 +1,24 @@
+syntax = "proto3";
+package common;
+
+option go_package = "common";
+
+import "idl/api.proto";
+
+message BaseResponse {
+    Status status = 1[(api.go_tag) = "json:\"status\""];
+    string msg = 2;
+}
+
+enum Status {
+    Success = 0;
+    Error = 1;
+    InvalidParams = 2;
+    Unauthorized = 3;
+    NotFound = 4;
+    ServerError = 5;
+    ServiceUnavailable = 6;
+    TooManyRequests = 7;
+    RequestTimeout = 8;
+}
+
