@@ -27,6 +27,8 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+//go:generate env GOOS=linux GOARCH=amd64 go build -o pixel.cmd main.go
+
 func main() {
 	// init dal
 	ctx, cancel := context.WithCancel(context.Background())

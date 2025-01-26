@@ -1,9 +1,11 @@
 package mysql
 
 import (
+	"log"
+	"pixeltrace/conf"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"pixeltrace/conf"
 )
 
 var (
@@ -19,6 +21,7 @@ func Init() {
 		},
 	)
 	if err != nil {
-		panic(err)
+		log.Fatalf("init mysql error: %v", err)
 	}
+	log.Println("init mysql success")
 }
