@@ -109,6 +109,7 @@ func NewFileDest(opts ...Option) (*FileDest, error) {
 	if h.ctx == nil {
 		h.ctx, h.cancel = context.WithCancel(context.Background())
 	}
+	h.closed.Store(false)
 	h.byteCount.Store(0)
 	h.init()
 	return h, nil

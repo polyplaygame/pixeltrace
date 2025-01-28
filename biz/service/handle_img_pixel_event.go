@@ -56,7 +56,6 @@ func (h *HandleImgPixelEventService) Run(req *pixel.ImgPixelEvent) (resp *common
 		}
 		return resp, err
 	}
-	hlog.CtxInfof(h.Context, "decode data success,request:%v,data:%v", req, string(data))
 	e := events.New().
 		SetApp(req.App).
 		SetIP(req.Ip).
